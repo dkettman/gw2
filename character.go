@@ -9,8 +9,8 @@ import (
 )
 
 // GetDetails will gather details of a given character in an Account struct.
-func (ch *Character) GetDetails(c *Config) {
-	v := Caller(c, "v2/characters/"+url.PathEscape(ch.Core.Name)+"/core")
+func (ch *Character) GetDetails(c *Client) {
+	v := Caller(&c.Config, "v2/characters/"+url.PathEscape(ch.Core.Name)+"/core")
 	dec := json.NewDecoder(strings.NewReader(string(v)))
 	for {
 		var charcore CharacterCore

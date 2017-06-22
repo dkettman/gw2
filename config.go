@@ -23,5 +23,9 @@ func LoadConfig(file string) (Config, error) {
 	}
 	jsonParser := json.NewDecoder(configFile)
 	jsonParser.Decode(&config)
+
+	if config.BaseURL == "" {
+		config.BaseURL = "https://api.guildwars2.com/"
+	}
 	return config, nil
 }
