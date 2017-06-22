@@ -1,16 +1,28 @@
 package main
 
-import "github.com/dkettman/gw2"
+import (
+	"fmt"
+	"os"
 
-// Config stores the configuration for the application Right now, there are two required objects required:
-// - apiKey: <String> - API key generated in the Account page of guildwars2.com
-// - baseURL: <String> - baseURL to use for API access. Currently only 'https://api.guildwars2.com/'
-var Config gw2.Config = gw2.LoadConfig("config.json")
+	"github.com/dkettman/gw2"
+)
 
 func main() {
 
-	account := gw2.Account{}
-	account.GetAccountInfo(&Config)
+	cfg, cfgErr := gw2.LoadConfig("config.json")
 
-	gw2.PrettyPrint(account)
+	if cfgErr != nil {
+		fmt.Printf("%v", cfgErr)
+		os.Exit(1)
+	}
+
+	c := gw2.NewClient(cfg)
+
+	err := c.GetAccountInfo()
+	if err != nil {
+		fmt.Printf("%v", err)
+		os.Exit(1)
+	}
+
+	gw2.PrettyPrint(c)
 }
